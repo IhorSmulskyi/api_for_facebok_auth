@@ -1,5 +1,5 @@
 class Api::V1::RegistrationsController < Devise::RegistrationsController
-	bedore_action :ensure_params_exist, only: :create
+  before_action :ensure_params_exist, only: :create
     #sing_in
     def create
         user = User.new user_params
@@ -26,7 +26,7 @@ class Api::V1::RegistrationsController < Devise::RegistrationsController
 		end
 		
 		def ensure_params_exist
-			return if params[user].present?
+		    return if params[:user].present?
 			render json: {
 				message: "Missing params",
 				is_success: false,
