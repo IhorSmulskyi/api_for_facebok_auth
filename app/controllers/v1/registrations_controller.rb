@@ -1,4 +1,5 @@
 class Api::V1::RegistrationsController < Devise::RegistrationsController
+	bedore_action :ensure_params_exist, only: :create
     #sing_in
     def create
         user = User.new user_params
