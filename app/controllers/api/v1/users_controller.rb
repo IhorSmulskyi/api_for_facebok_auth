@@ -33,7 +33,6 @@ class Api::V1::UsersController < ApplicationController
         res = http.request(Net::HTTP::Get.new("#{uri.request_uri}?access_token=#{@token}"))
         contents = JSON.parse(res.body)
         puts JSON.pretty_generate(contents)
-        json_response "User Information", true, {contents: contents}, :ok
+        json_response "Information", true, {contents: contents}, :ok
     end
-    
   end
