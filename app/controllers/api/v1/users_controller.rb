@@ -1,31 +1,39 @@
-class Api::V1::UsersController < ApplicationController
+require 'json'
+require 'net/https'
 
-    def facebook
-      if params[:facebook_access_token]
-        graph = Koala::Facebook::API.new params[:facebook_access_token]
-        user_data = graph.get_object("me?fields=name,email,id,picture")
+URL_BASE   = "https://graph.facebook.com/me?"  	
   
-        user = User.find_by email: user_data["email"]
-        if user
-          user.generate_new_authentication_token
-          json_response "User Information", true, {user: user}, :ok
-        else
-          user = User.new(email: user_data["email"],
-                          uid: user_data["id"],
-                          provider: "facebook",
-                          image: user_data["picture"]["data"]["url"],
-                          password: Devise.friendly_token[0,20])
-  
-          user.authentication_token = User.generate_unique_secure_token
-  
-          if user.save
-            json_response "Login Facebook Successfully", true, {user: user}, :ok
-          else
-            json_response user.errors, false, {}, :unprocessable_entity
-          end
-        end
-      else
-        json_response "Missing facebook access token", false, {}, :unprocessable_entity
+APP_ID     = "471280757047696"
+APP_SECRET = "58a8be5228ce0974133f1a21687e1ba7"
+
+class Api::V1::UsersController < ApplicationController
+  def initialize
+    @token = get_token
+  end 
+  def get_token
+    begin
+      uri = URI.parse("https://graph.facebook.com/oauth/access_token")
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      res = http.request(Net::HTTP::Get.new("#{uri.request_uri}?client_id=#{APP_ID}&client_secret=#{APP_SECRET}&grant_type=client_credentials"))
+      res=JSON.parse(res.body)
+      return res.slice("access_token").values.join("")
+    rescue => e
+      STDERR.puts "[ERROR][#{self.class.name}.get_token] #{e}"
+      exit 1
       end
     end
+
+    def facebook
+        uri = URI.parse(URL_BASE)
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        res = http.request(Net::HTTP::Get.new("#{uri.request_uri}?access_token=#{@token}"))
+        contents = JSON.parse(res.body)
+        puts JSON.pretty_generate(contents)
+        json_response "User Information", true, {contents: contents}, :ok
+    end
+    
   end
