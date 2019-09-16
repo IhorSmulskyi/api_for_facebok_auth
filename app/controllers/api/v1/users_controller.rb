@@ -4,7 +4,7 @@ require 'net/https'
 URL_BASE   = "https://graph.facebook.com/me?"  	
   
 APP_ID     = "471280757047696"
-APP_SECRET = "58a8be5228ce0974133f1a21687e1ba7"
+APP_SECRET = "7d813d9f75e24c51e1846237dce1d58d"
 
 class Api::V1::UsersController < ApplicationController
   def initialize
@@ -31,6 +31,7 @@ class Api::V1::UsersController < ApplicationController
         http.use_ssl = true
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
         res = http.request(Net::HTTP::Get.new("#{uri.request_uri}?access_token=#{@token}"))
+        binding.pry
         contents = JSON.parse(res.body)
         puts JSON.pretty_generate(contents)
         json_response "Information", true, {contents: contents}, :ok
