@@ -13,7 +13,5 @@ class GetFacebookData
     http.use_ssl = true
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
     res = http.request(Net::HTTP::Get.new("#{uri.request_uri}?access_token=#{@token}"))
-    # contents = JSON.parse(res.body)
-    # puts JSON.pretty_generate(contents)
   end
 end
