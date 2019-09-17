@@ -48,3 +48,5 @@ gem "devise", "~> 4.7.1"
 gem "simple_token_authentication", "~> 1.16.0"
 gem "koala", "~> 3.0.0"
 gem "pry", "~> 0.12.2"
+gem 'light-services', '~> 0.6' 
+gem 'dotenv-rails', groups: [:development, :test]
