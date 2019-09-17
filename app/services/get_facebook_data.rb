@@ -4,7 +4,7 @@ require 'net/https'
 
 class GetFacebookData
   def initialize
-    @token = "EAAGsoJodAZAABADO9SmUK8SGnfZBKCexMh3pB57u1fq1nJN0tizxH0MveRp3F7PUpiVUM4A5Ks4eCpQ57MmZCnDxFCiFyf0HvDKfjO41l6XpgMVXaFgyZAi6ufsozTzG2MyhibH3Q7njFLOJgOYuZAfFM9cE6rkHKyMFE7YzF2Ht619G5QwdjT4WZBEZAUOVZBxKrAlsRqSXngZDZD"
+    @token = "EAAGsoJodAZAABANjG5agw0fJ70MWudZCVxdz45hLIq8sj2sZCvhKeyB0wHD9e3EEHWZApZAlZAp63znMT7u3tONgdbY6TpsLufDq0Ajwjr0w7lLiznDDSCPfyGz8KqYoU1ZBu0czloaC9k1yUhvoS2W3flcE9G1rkA81wrTNlQlV8NTcQw6QcVkaFk6ZBg5omXEZD"
   end 
 
   def get_facebook_data
@@ -12,6 +12,6 @@ class GetFacebookData
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    res = http.request(Net::HTTP::Get.new("#{uri.request_uri}?access_token=#{@token}"))
+    res = http.request(Net::HTTP::Get.new("#{uri.request_uri}?access_token=#{@token}&fields=id,name,email"))
   end
 end
