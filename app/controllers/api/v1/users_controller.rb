@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Api::V1::UsersController < ApplicationController
+
+
   before_action :choose_provider
   def choose_provider
     uri = URI.parse(ENV['URL_BASE'])
@@ -22,20 +24,25 @@ class Api::V1::UsersController < ApplicationController
 
   def facebook
     user_data = JSON.parse(@getdata)
-    user = User.find_by email: user_data['email']
-    binding.pry
-    if user
-      user.generate_new_authentication_token
-      json_response 'User Information', true, { user: user }, :ok
+    # user = User.find_by email: user_data['email']
+    user_identity = Identity.find_by uid: user_data['id']
+    if user_identity
+      User.find_by uid: user_data['id'].generate_new_authentication_token
+      json_response 'User Information', true, { user: (User.find_by uid: user_data['id']) }, :ok
     else
-      user = ::RegistrationUseProvider.new(user_data, @provider)
-      user.authentication_token = User.generate_unique_secure_token
+      if (user = User.find_by email: user_data['email'])
+        ::RegistrationIdentityTable.create_identity_user(user, user_data, @provider)
+        user.authentication_token = User.generate_unique_secure_token
+      else
+        user = ::RegistrationUserProvider.new(user_data, @provider)
+        user.authentication_token = User.generate_unique_secure_token
 
       if user.save
-        json_response 'Login Facebook Successfully', true, { user: user }, :ok
+        json_response 'Login #{@provider} Successfully', true, { user: user }, :ok
       else
         json_response user.errors, false, {}, :unprocessable_entity
       end
     end
+  end
   end
 end

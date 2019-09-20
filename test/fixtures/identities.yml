@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id: MyString
+  uid: MyString
+  provider: MyString
+
+two:
+  id: MyString
+  uid: MyString
+  provider: MyString

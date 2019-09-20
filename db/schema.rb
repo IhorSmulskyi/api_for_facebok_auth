@@ -12,7 +12,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_190_912_082_250) do
+ActiveRecord::Schema.define(version: 20_190_919_120_802) do
+  create_table 'identities', force: :cascade do |t|
+    t.string 'user_id'
+    t.string 'uid'
+    t.string 'provider'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+  end
+
   create_table 'users', force: :cascade do |t|
     t.string 'email', default: '', null: false
     t.string 'encrypted_password', default: '', null: false
