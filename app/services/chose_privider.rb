@@ -1,4 +1,5 @@
-class ChoseProvider(user_data)
+class ChoseProvider(provider, user_data)
+  
   case provider
   when 'facebook'
     facebook_data = ::GetFacebookData.new.get_facebook_data(uri).body

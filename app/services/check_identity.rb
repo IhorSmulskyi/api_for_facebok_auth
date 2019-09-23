@@ -1,5 +1,4 @@
 class CheckIdentity
-  
   def facebook(data)
     provider_data = JSON.parse(data)
     # user = User.find_by email: user_data['email']
@@ -25,5 +24,4 @@ class CheckIdentity
       json_response "Login #{@provider} Successfully", true, { user: user }, :ok
     end
   end
-
 end
