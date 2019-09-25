@@ -1,5 +1,5 @@
-class ChoseProvider(provider, user_data)
-  
+class ChoseProvider
+  def provider(provider, user_data)
   case provider
   when 'facebook'
     facebook_data = ::GetFacebookData.new.get_facebook_data(uri).body
@@ -10,5 +10,5 @@ class ChoseProvider(provider, user_data)
   else
     puts 'No provider'
   end
- 
+end
 end
