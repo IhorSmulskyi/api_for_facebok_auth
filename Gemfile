@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -30,7 +32,7 @@ gem 'rack-cors'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
 end
 
 group :development do
@@ -40,9 +42,13 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
-
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
-gem "devise", "~> 4.7.1"
-gem "simple_token_authentication", "~> 1.16.0"
+gem 'devise', '~> 4.7.1'
+gem 'dotenv-rails', groups: %i[development test]
+gem 'koala', '~> 3.0.0'
+gem 'light-services', '~> 0.6'
+gem 'pry', '~> 0.12.2'
+gem 'rubocop', '~> 0.74.0', require: false
+gem 'simple_token_authentication', '~> 1.16.0'
